@@ -118,7 +118,7 @@ if (isset($_POST['name'])) {
     document.getElementById('plan').addEventListener('change',changeOption)
 
     let user_level ={0:'等級0',1:'等級1',2:'等級2',3:'等級3'};
-    let prod_type = {0:'type1',0:'type2',0:'type3',0:'type4',};
+    let prod_type = {0:'type1',1:'type2',2:'type3',3:'type4',};
     let price_type = {0: '10000',1:'20000',3:'30000'};
     let amount_type = {0:2,1:4,2:6};
     function changeOption(e) {
@@ -127,7 +127,7 @@ if (isset($_POST['name'])) {
             case 'user_plan':
                 jQuery("#condi").empty();
                 $.each(user_level, function (index, value) {
-                    alert(index + ": " + value);
+
                     jQuery("#condi").append("<option value='" + index + "'>" + value + "</option>");
 
                 });
@@ -135,7 +135,7 @@ if (isset($_POST['name'])) {
             case 'prod_plan':
                 jQuery("#condi").empty();
                 $.each(prod_type, function (index, value) {
-                    alert(index + ": " + value);
+
                     jQuery("#condi").append("<option value='" + index + "'>" + value + "</option>");
 
                 });
@@ -143,7 +143,7 @@ if (isset($_POST['name'])) {
             case 'price_plan':
                 jQuery("#condi").empty();
                 $.each(price_type, function (index, value) {
-                    alert(index + ": " + value);
+
                     jQuery("#condi").append("<option value='" + index + "'>" + value + "</option>");
 
                 });
@@ -151,7 +151,7 @@ if (isset($_POST['name'])) {
             case 'amount_plan':
                 jQuery("#condi").empty();
                 $.each(amount_type, function (index, value) {
-                    alert(index + ": " + value);
+                    
                     jQuery("#condi").append("<option value='" + index + "'>" + value + "</option>");
 
                 });
