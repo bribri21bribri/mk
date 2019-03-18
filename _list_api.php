@@ -30,7 +30,7 @@ if(isset($_POST['planType'])) {
   $stmt = $pdo->prepare($sql);
   $stmt->execute();
   $rows= $stmt->fetchAll(PDO::FETCH_ASSOC);
-  $list_content = "";
+
 
 
 
@@ -41,7 +41,7 @@ if(isset($_POST['planType'])) {
 
 
 // 所有資料一次拿出來
-  $result['data'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  $result['data'] = $rows;
   $result['success'] = true;
 }
 // 將陣列轉換成 json 字串
