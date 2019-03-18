@@ -1,5 +1,5 @@
 <?php
-include __DIR__.'/../_connectDB.php';
+include __DIR__ . '/../_connectDB.php';
 
 
 
