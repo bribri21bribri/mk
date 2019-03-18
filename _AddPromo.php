@@ -1,48 +1,48 @@
-<?php include __DIR__ . './_header.php' ?>
-<?php include __DIR__ . './_connectDB.php' ?>
+<?php //include __DIR__ . './_header.php' ?>
+<?php //include __DIR__ . './_connectDB.php' ?>
 <?php
-
-if (isset($_POST['name'])) {
-
-  $name = $_POST['name'];
-  $condi = $_POST['condi'];
-  $dis_num = $_POST['dis_num'];
-  $dis_type = $_POST['dis_type'];
-  $start = $_POST['start'];
-  $end = $_POST['end'];
-
-  $sql = "INSERT INTO {$_POST['plan']} (`name`,`user_level`,`dis_num`,`dis_type`,`start`,`end`) VALUE (?,?,?,?,?,?)";
-
-
-  try {
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        $name,
-        $condi,
-        $dis_num,
-        $dis_type,
-        $start,
-        $end
-    ]);
-    if($stmt->rowCount()==1){
-      $msg = [
-          'msgClass'=>'success',
-          'info'=>'新增成功'
-      ];
-
-    }else{
-      $msg = [
-          'msgClass'=>'danger',
-          'info'=>'新增錯誤'
-      ];
-    }
-
-
-  } catch (PDOException $ex) {
-    echo $ex->getMessage();
-  }
-}
-
+//
+//if (isset($_POST['name'])) {
+//
+//  $name = $_POST['name'];
+//  $condi = $_POST['condi'];
+//  $dis_num = $_POST['dis_num'];
+//  $dis_type = $_POST['dis_type'];
+//  $start = $_POST['start'];
+//  $end = $_POST['end'];
+//
+//  $sql = "INSERT INTO {$_POST['plan']} (`name`,`user_level`,`dis_num`,`dis_type`,`start`,`end`) VALUE (?,?,?,?,?,?)";
+//
+//
+//  try {
+//    $stmt = $pdo->prepare($sql);
+//    $stmt->execute([
+//        $name,
+//        $condi,
+//        $dis_num,
+//        $dis_type,
+//        $start,
+//        $end
+//    ]);
+//    if($stmt->rowCount()==1){
+//      $msg = [
+//          'msgClass'=>'success',
+//          'info'=>'新增成功'
+//      ];
+//
+//    }else{
+//      $msg = [
+//          'msgClass'=>'danger',
+//          'info'=>'新增錯誤'
+//      ];
+//    }
+//
+//
+//  } catch (PDOException $ex) {
+//    echo $ex->getMessage();
+//  }
+//}
+//
 
 ?>
 
