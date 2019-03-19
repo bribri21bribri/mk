@@ -11,7 +11,6 @@ $result = [
 
 ];
 
-
 if (isset($_POST['planType'])) {
   $planType = $_POST['planType'];
   $name = $_POST['name'];
@@ -39,11 +38,11 @@ if (isset($_POST['planType'])) {
 
   // check every field isn't empty
 //TODO: check ERROR
-//  if (empty($planType) or empty($condi) or empty($dis_num) or empty($dis_type) or empty($start) or empty($end)) {
-//    $result['errorCode'] = 400;
-//    echo json_encode($result, JSON_UNESCAPED_UNICODE);
-//    exit;
-//  }
+  if (empty($planType) or empty($name) or empty($condi) or empty($dis_num) or empty($dis_type) or empty($start) or empty($end)) {
+    $result['errorCode'] = 400;
+    echo json_encode($result, JSON_UNESCAPED_UNICODE);
+    exit;
+  }
 
   // TODO: 檢查
 

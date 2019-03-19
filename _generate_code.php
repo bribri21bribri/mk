@@ -1,5 +1,5 @@
 <?php
-include __DIR__ . '/../_connectDB.php';
+include __DIR__ . '/_connectDB.php';
 
 
 
@@ -10,7 +10,7 @@ function check_codes($pdo,$rand_str){
   $stmt->execute([]);
   $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
   foreach ($rows as $row){
-    if($row['code']==$rand_str){
+    if($row['coupon_code']==$rand_str){
       $code_exists = true;
       break;
     }else{
@@ -36,4 +36,4 @@ function generate_code($pdo){
   return $rand_str;
 }
 
-echo generate_code($pdo);
+//echo generate_code($pdo);

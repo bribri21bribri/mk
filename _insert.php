@@ -38,17 +38,17 @@
                 <label>條件</label>
 
                 <select id="user_condi" class="form-control" name="user_condi">
-                  <option value="0">等級0</option>
                   <option value="1">等級1</option>
                   <option value="2">等級2</option>
                   <option value="3">等級3</option>
+                  <option value="4">等級4</option>
                 </select>
 
                   <select id="prod_condi" class="form-control" name="prod_condi">
-                    <option value="0">類型0</option>
                     <option value="1">類型1</option>
                     <option value="2">類型2</option>
                     <option value="3">類型3</option>
+                    <option value="4">類型4</option>
                   </select>
 
                   <input type="text" class="form-control" name="price_condi" id="price_condi" placeholder="輸入購買金額條件">
@@ -65,8 +65,8 @@
               <div class="form-group">
                 <label>折扣類型</label>
                 <select class="form-control" name="dis_type">
-                  <option value="0">打折</option>
-                  <option value="1">扣除金額</option>
+                  <option value="1">打折</option>
+                  <option value="2">扣除金額</option>
                 </select>
               </div>
 

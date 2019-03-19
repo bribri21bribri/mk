@@ -74,7 +74,7 @@ if (isset($_POST['planType'])) {
       $result['errorMsg'] = '';
     } else {
       $result['errorCode'] = 402;
-      $result['errorMsg'] = '資料新增錯誤';
+      $result['errorMsg'] = '資料須為數值';
     }
   } catch (PDOException $ex) {
     $result['errorCode'] = 403;

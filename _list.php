@@ -4,6 +4,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lo-12">
+                <div class="alert alert-success" role="alert" style="display: none;" id="info_bar"></div>
                 <form method="POST" name="addPromoForm" id="addPromoForm">
 
                     <div class="form-group">
@@ -47,31 +48,13 @@
 
     </div>
     <script>
-
+        const info_bar = document.getElementById('info_bar');
         const planType = document.getElementById('planType');
         planType.addEventListener('change', sendPlanType);
 
         const data_body = document.getElementById('data_body');
-        // underscore.js template
-        // const tr_str = `<tr>
-        //                     <td>
-        //                         <a href="javascript: update_plan(<%= id %>)" class="update_btn"><i class="fas fa-edit"></i></a>
-        //                     </td>
-        //                     <td><%= id %></td>
-        //                     <td><%= name %></td>
-        //                     <td><%= planType.value %></td>
-        //                     <td><%= dis_num %></td>
-        //                     <td><%= dis_type %></td>
-        //                     <td><%= start %></td>
-        //                     <td><%= end %></td>
-        //                     <td><a href="javascript: delete_plan(<%= id %>)">
-        //                           <i class="fas fa-trash-alt"></i>
-        //                         </a>
-        //                     </td>
-        //                 </tr>`;
-        // const tr_func = _.template(tr_str);
 
-
+//TODO:FUNCTION
         function deside_planType() {
             let condi;
             if (planType.value == 'user_plan') {
@@ -86,7 +69,7 @@
             return condi
         }
 
-
+//TODO:FUNCTION
         function sendPlanType() {
             let condi = deside_planType();
 
@@ -124,15 +107,13 @@
 
                         console.log(val);
                         str += tr_str;
-                        //rending list using underscore.js
-                        // str += tr_func(val);
                     }
                     data_body.innerHTML = str;
 
                 })
         }
 
-
+//TODO:FUNCTION
         function delete_plan(id) {
 
             if (confirm(`確認是否刪除`)) {
@@ -156,6 +137,7 @@
 
         $('#data_body').on('click', '.update_btn', switch_update_form);
 
+//TODO:FUNCTION
         //switch list row to form for updating
         function switch_update_form(e) {
 
@@ -201,7 +183,14 @@
                 method: 'POST',
                 body: plan
             })
-                .then(response => response.json())
+                .then(response => {
+
+                   return response.json()
+                })
+                .then(json=>{
+
+                    return json;
+                })
                 .then(json => {
                     console.log(json);
                     let ori_data = json;
@@ -242,10 +231,7 @@
 
 
 
-                }).then(() => {
-
-
-            })
+                })
         }
         $('#data_body').on('click', '.update_submit_btn',send_update_form);
 
@@ -300,16 +286,16 @@
 
                     console.log(obj);
 
-                    // info_bar.style.display = 'block';
+                    info_bar.style.display = 'block';
 
                     if(obj.success){
-                        console.log('success')
-                        // info_bar.className = 'alert alert-success';
-                        // info_bar.innerHTML = '資料新增成功';
+
+                        info_bar.className = 'alert alert-success';
+                        info_bar.innerHTML = '資料修改成功';
                     } else {
-                        console.log('fail')
-                        // info_bar.className = 'alert alert-danger';
-                        // info_bar.innerHTML = obj.errorMsg;
+
+                        info_bar.className = 'alert alert-danger';
+                        info_bar.innerHTML = obj.errorMsg;
                     }
 
                     update_submit_btn.style.display = 'block';

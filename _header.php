@@ -11,9 +11,6 @@
   <script src="./node_modules/underscore/underscore.js"></script>
   <script src="node_modules/popper.js/dist/umd/popper.js"></script>
   <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
-
-
-
   <title>Document</title>
 </head>
 <body>
