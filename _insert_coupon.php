@@ -45,7 +45,7 @@
                           </select>
                       </div>
                       <div class="form-group">
-                      <label>結束時間</label>
+                      <label>到期時間</label>
                       <input type="date" id="start" name="coupon_expire"
                              value="2018-07-22"
                              min="2018-01-01" max="2020-12-31">
