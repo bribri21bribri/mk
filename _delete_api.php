@@ -10,18 +10,18 @@ $result = [
     'post' => [], // 做 echo 檢查
 
 ];
-try{
-if(isset($_POST['planType'])) {
-  $planType = $_POST['planType'];
-  $id = $_POST['id'];
-  $sql = "DELETE FROM {$planType} WHERE `id`=$id";
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute();
-
-  $result['errorMsg'] = '刪除成功';
-  $result['success'] = true;
-}
-}catch (PDOException $ex){
+try {
+  if (isset($_POST['planType'])) {
+    $planType = $_POST['planType'];
+    $id = $_POST['id'];
+    $sql = "DELETE FROM {$planType} WHERE `id`=$id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $result['success'] = true;
+  } else {
+    $result['errorMsg'] = '刪除失敗';
+  }
+} catch (PDOException $ex) {
   $result['errorMsg'] = $ex->getMessage();
 }
 

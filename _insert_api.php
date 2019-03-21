@@ -13,21 +13,23 @@ $result = [
 
 if (isset($_POST['planType'])) {
   $planType = $_POST['planType'];
-  $name = $_POST['name'];
-
+  $condi_col="";
   if ($planType=='user_plan') {
-     $condi = $_POST['user_condi'];
-     $condi_col = 'user_condi';
+    $condi_col = 'user_condi';
   } elseif ($planType == 'price_plan') {
-    $condi = $_POST['price_condi'];
     $condi_col = 'price_condi';
   } elseif ($planType == 'prod_plan') {
-    $condi = $_POST['prod_condi'];
     $condi_col = 'prod_condi';
   } elseif ($planType == 'amount_plan') {
-    $condi = $_POST['amount_condi'];
     $condi_col = 'amount_condi';
   }
+
+
+
+
+  $name = $_POST['name'];
+  $condi = $_POST['condi'];
+
 
   $dis_num = $_POST['dis_num'];
   $dis_type = $_POST['dis_type'];
@@ -37,7 +39,6 @@ if (isset($_POST['planType'])) {
   $result['post'] = $_POST;  // 做 echo 檢查
 
   // check every field isn't empty
-//TODO: check ERROR
   if (empty($planType) or empty($name) or empty($condi) or empty($dis_num) or empty($dis_type) or empty($start) or empty($end)) {
     $result['errorCode'] = 400;
     echo json_encode($result, JSON_UNESCAPED_UNICODE);
@@ -73,7 +74,8 @@ if (isset($_POST['planType'])) {
     }
   } catch (PDOException $ex) {
     $result['errorCode'] = 403;
-    $result['errorMsg'] = $ex->getMessage();
+    $result['errorMsg'] = "方案已存在";
+//    $result['errorMsg'] = $ex->getMessage();
   }
 }
 

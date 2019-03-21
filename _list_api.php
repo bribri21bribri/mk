@@ -40,6 +40,7 @@ if(isset($_POST['planType'])) {
 
 
 
+
 // 所有資料一次拿出來
   $result['data'] = $rows;
   $result['success'] = true;

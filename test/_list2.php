@@ -1,5 +1,5 @@
 <?php include __DIR__ . './_header.php' ?>
-<?php include __DIR__ . './_nav.php' ?>
+
 
     <div class="container-fluid">
         <div class="row">
@@ -74,7 +74,7 @@
 
         }
         let condi = deside_planType();
-        console.log(condi);
+        // console.log(condi);
         //TODO:FUNCTION
         function sendPlanType() {
 
@@ -88,7 +88,7 @@
             })
                 .then(response => response.json())
                 .then(json => {
-                    console.log(json);
+                    // console.log(json);
                     ori_data = json;
                     for (let v of ori_data.data) {
                         ori_obj[v['id']] = v;
@@ -117,6 +117,9 @@
                         console.log(val);
                         str += tr_str;
                     }
+
+                    console.log(ori_data.data);
+                    console.log(ori_obj);
                     data_body.innerHTML = str;
 
                 })

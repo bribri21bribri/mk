@@ -1,14 +1,17 @@
 <?php
 require __DIR__. '/_connectDB.php';
 header('Content-Type: application/json');
-
+$per_page = 10;
 $result = [
     'success' => false,
     'errorCode' => 0,
     'errorMsg' => '資料輸入不完整',
     'post' => [], // 做 echo 檢查
     'data'=>[],
-    'according_to'=>0
+    'according_to'=>0,
+    'per_page'=>$per_page,
+    'total_page'=>0,
+    'total_row'=>0
 ];
 
 

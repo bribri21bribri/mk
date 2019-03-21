@@ -1,6 +1,34 @@
 <?php include __DIR__ . './_header.php' ?>
-<?php include __DIR__ . './_nav.php' ?>
+<?php include __DIR__ . './_coupon_nav.php';
 
+include __DIR__ . './_connectDB.php';
+try {
+  $mem_sql = "SELECT * FROM member_level";
+  $mem_stmt = $pdo->query($mem_sql);
+  $mem_rows = $mem_stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $ex) {
+  echo $ex->getMessage();
+}
+
+?>
+
+
+    <style>
+        #assign_to_user {
+            width: 300px;
+            height: 400px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            background: rgba(0, 0, 0, 0.6);
+            transform: translateY(-50%) translateX(-50%);
+            border-radius: 10px;
+        }
+
+        body {
+            position: relative;
+        }
+    </style>
 
     <div class="container-fluid">
 
@@ -10,8 +38,9 @@
                 <form name="list_coupon_form" id="list_coupon_form">
                     <div class="form-group">
                         <label>查詢依據</label>
+
                         <select class="form-control" name="according_to" id="according_to" onchange="switch_input()">
-                            <option>---請選擇查詢依據---</option>
+
                             <option value="1">列出所有coupon</option>
                             <option value="2">列出有效期限內coupon</option>
                             <option value="3">列出已過期coupon</option>
@@ -58,134 +87,42 @@
                     </tbody>
                 </table>
             </div>
+
         </div>
 
-        <div class="row" id="assign_to_user" style="display: none">
-            <button  class="close" type="button" onclick="">
+        <div class="row modal" id="assign_to_user" style="display: none">
+            <button class="close" type="button" onclick="">
                 <span aria-hidden="true">&times;</span>
             </button>
             <div class="col-lg-12">
                 <form>
                     <div class="form-group">
-                    <input type="text" placeholder="輸入欲指派使用者ID" id="assign_by_id">
+                        <input type="text" placeholder="輸入欲指派使用者ID" id="assign_by_id">
                     </div>
                     <button class="btn btn-primary" onclick="group_assign()" type="button">Submit</button>
                 </form>
             </div>
         </div>
-        <button class="btn btn-warning" onclick="assign_to_user.style.display = 'block';" type="button">依使用者ID指定</button>
-<!--TODO-->
-        <div class="row" id="" style="display: none">
+        <button class="btn btn-warning" onclick="assign_to_user.style.display = 'block';" type="button">依使用者ID指定
+        </button>
+
+        <div class="row" id="issue_by_level" style="display: none">
             <div class="col-lg-12">
-                <form class="update_form">
-
-
-                    <button class="btn btn-primary" onclick="" type="button">Submit</button>
+                <form>
+                    <select class="form-control" name="issue_level" id="issue_level">
+                      <?php foreach ($mem_rows as $mem_row): ?>
+                          <option value="<?= $mem_row['mem_level'] ?>"><?= $mem_row['level_title'] ?></option>
+                      <?php endforeach; ?>
+                    </select>
+                    <button class="btn btn-primary" onclick="issue_by_level()" type="button">Submit</button>
                 </form>
             </div>
         </div>
-        <button class="btn btn-warning" onclick="" type="button">依使用者LEVEL指定</button>
-<!--        <div class="row" id="update_coupon_name" style="display: none">-->
-<!--            <div class="col-lg-12">-->
-<!--                <form class= "update_form">-->
-<!--                    <div class="form-group">-->
-<!--                        <input type="text" placeholder="輸入欲修改coupont名稱" id="name_to_update">-->
-<!--                    </div>-->
-<!---->
-<!--                    <button class="btn btn-primary" onclick="group_update_name()" type="button">Submit</button>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <button class="btn btn-warning" onclick="update_coupon_name.style.display = 'block'" type="button">修改coupon名稱</button>-->
-<!--        <div class="row" id="update_dis_num" style="display: none">-->
-<!--            <div class="col-lg-12">-->
-<!--                <form class="update_form">-->
-<!--                    <div class="form-group">-->
-<!--                        <input type="text" placeholder="輸入欲修改折扣數值" id="num_to_update">-->
-<!--                    </div>-->
-<!---->
-<!--                    <button class="btn btn-primary" onclick="" type="button">Submit</button>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <button class="btn btn-warning" onclick="update_dis_num.style.display = 'block'" type="button">修改折扣數值</button>-->
-<!--        <div class="row" id="update_dis_type" style="display: none">-->
-<!--            <div class="col-lg-12">-->
-<!--                <form class="update_form">-->
-<!--                    <div class="form-group">-->
-<!--                        <select class="form-control" name="dis_type" id="type_to_update">-->
-<!--                            <option>---選擇折扣類型---</option>-->
-<!--                            <option value="1">打折</option>-->
-<!--                            <option value="2">扣除金額</option>-->
-<!--                        </select>-->
-<!--                    </div>-->
-<!---->
-<!--                    <button class="btn btn-primary" onclick="" type="button">Submit</button>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <button class="btn btn-warning" onclick="update_dis_type.style.display = 'block'" type="button">修改折扣類型</button>-->
-<!--        <div class="row" id="update_issue_condi" style="display: none">-->
-<!--            <div class="col-lg-12">-->
-<!--                <form class="update_form">-->
-<!--                    <div class="form-group">-->
-<!--                        <select class="form-control" name="issue_condi" id="condi_to_update">-->
-<!--                            <option>---選擇發放條件---</option>-->
-<!--                            <option value="1">初次登入</option>-->
-<!--                            <option value="2">會員等級</option>-->
-<!--                            <option value="3">訂單</option>-->
-<!--                        </select>-->
-<!--                    </div>-->
-<!---->
-<!--                    <button class="btn btn-primary" onclick="" type="button">Submit</button>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <button class="btn btn-warning" onclick="update_issue_condi.style.display = 'block'" type="button">修改發放條件</button>-->
-<!--        <div class="row" id="update_valid" style="display: none">-->
-<!--            <div class="col-lg-12">-->
-<!--                <form class="update_form">-->
-<!--                    <div class="form-group">-->
-<!--                        <select class="form-control" name="issue_condi" id="valid_to_update">-->
-<!--                            <option>---設定是否啟用---</option>-->
-<!--                            <option value="1">啟用</option>-->
-<!--                            <option value="2">關閉</option>-->
-<!--                        </select>-->
-<!--                    </div>-->
-<!---->
-<!--                    <button class="btn btn-primary" onclick="" type="button">Submit</button>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <button class="btn btn-warning" onclick="update_valid.style.display = 'block'" type="button">修改是否有效</button>-->
-<!--        <div class="row" id="update_expire" style="display: none">-->
-<!---->
-<!--            <div class="col-lg-12">-->
-<!--                <form class="update_form">-->
-<!--                    <div class="form-group">-->
-<!--                        <label>選擇到期時間</label>-->
-<!--                        <input type="date" id="start" name="coupon_expire"-->
-<!--                               value="2018-07-22"-->
-<!--                               min="2018-01-01" max="2020-12-31" id="expire_to_update">-->
-<!--                    </div>-->
-<!--                    </div>-->
-<!---->
-<!--                    <button class="btn btn-primary" onclick="" type="button">Submit</button>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        <button class="btn btn-warning" onclick="update_expire.style.display = 'block'" type="button">修改到期日</button>-->
-<!--        </div>-->
-
-
-
-
-
-
+        <button class="btn btn-warning" onclick="document.getElementById('issue_by_level').style.display = 'block'" type="button">依使用者LEVEL指定</button>
 
 
         <button class="btn btn-danger" onclick="group_delete()" type="button">刪除</button>
     </div>
-
 
 
     <script>
@@ -196,9 +133,18 @@
         // const update_valid = document.getElementById('update_valid');
         // const update_expire = document.getElementById('update_expire');
         const assign_to_user = document.getElementById('assign_to_user');
+        let according_val;
+
         function switch_input(e) {
             const coupon_output = document.getElementById('coupon_output');
-            const according_val = document.getElementById('according_to').value;
+            if (document.getElementById('according_to').value) {
+                according_val = document.getElementById('according_to').value;
+                console.log(according_val)
+            } else {
+                according_val = 1;
+                console.log(according_val);
+            }
+
             const coupon_table = document.getElementById('coupon_table');
             let according_to = new FormData();
             according_to.append('according_to', according_val);
@@ -238,7 +184,7 @@
 
                                 let tr_str = `<tr>
                         <td>
-                            <a href="#" class="update_btn" ><i class="fas fa-edit"></i></a>
+                            <a  href="_edit_coupon.php?coupon_id=${data['coupon_id']}" class="update_btn" ><i class="fas fa-edit"></i></a>
                         </td>
                         <td class="coupon_id">${data['coupon_id']}</td>
                         <td class="coupon_name">${data['coupon_name']}</td>
@@ -266,6 +212,8 @@
                     }
                 )
         }
+
+        switch_input();
 
         function send_search_condition(e) {
             const according_to = document.getElementById('according_to').value;
@@ -308,7 +256,7 @@
 
                         let tr_str = `<tr>
                         <td>
-                            <a href="#" class="update_btn" ><i class="fas fa-edit"></i></a>
+                            <a href="_edit_coupon.php?coupon_id=${data['coupon_id']}" class="update_btn" ><i class="fas fa-edit"></i></a>
                         </td>
                         <td class="coupon_id">${data['coupon_id']}</td>
                         <td class="coupon_name">${data['coupon_name']}</td>
@@ -359,6 +307,7 @@
                     .then(result => {
                         console.log(result);
                         info_bar.style.display = 'block';
+                        switch_input();
                         if (result['success']) {
                             info_bar.className = 'alert alert-success';
                             info_bar.innerHTML = '刪除成功';
@@ -383,17 +332,34 @@
                 }
 
             });
-            delete_coupons = JSON.stringify(delete_coupons);
-            form.append('delete_coupons', delete_coupons);
-            fetch('_group_delete_api.php', {
-                method: 'POST',
-                body: form
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data)
-                    switch_input()
-                })
+            if (confirm('確認刪除資料')) {
+                info_bar.style.display = 'block';
+                if (delete_coupons.length < 1) {
+                    info_bar.className = 'alert alert-danger';
+                    info_bar.innerHTML = "未選擇資料";
+                    setTimeout(function () {
+                        info_bar.style.display = 'none'
+                    }, 2000);
+                    return false;
+                } else {
+                    delete_coupons = JSON.stringify(delete_coupons);
+                    form.append('delete_coupons', delete_coupons);
+                    fetch('_group_delete_api.php', {
+                        method: 'POST',
+                        body: form
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                            switch_input()
+                            info_bar.className = 'alert alert-success';
+                            info_bar.innerHTML = "刪除成功";
+                            setTimeout(function () {
+                                info_bar.style.display = 'none'
+                            }, 2000);
+                        })
+                }
+            }
         }
 
         function select_all() {
@@ -413,9 +379,9 @@
         }
 
 
-        function group_assign(){
-            if(confirm('確認指派給此使用者')){
-                document.getElementById('assign_to_user').style.display = 'none'
+        function group_assign() {
+            if (confirm('確認指派給此使用者')) {
+                document.getElementById('assign_to_user').style.display = 'none';
                 const selected_coupons = document.getElementsByClassName('selected_coupon');
 
                 let form = new FormData();
@@ -433,45 +399,63 @@
 
 
                 let user_id = document.getElementById('assign_by_id').value;
-                form.append('user_id',user_id);
+                form.append('user_id', user_id);
 
-                fetch('_group_assign_api.php',{
-                    method:'POST',
-                    body:form
+                fetch('_group_assign_api.php', {
+                    method: 'POST',
+                    body: form
                 })
-                    .then(response=>response.text())
-                    .then(data=>console.log(data))
+                    .then(response => response.text())
+                    .then(data => console.log(data))
             }
         }
-        function group_update_name(){
-            if(confirm('確認更新coupon名稱')){
-                document.getElementById('update_coupon_name').style.display = 'none'
-                const selected_coupons = document.getElementsByClassName('selected_coupon');
-                let form = new FormData();
 
-                //Get all coupon id which has been checked, put it in an array and convert array to string
-                let update_coupons = [];
-                Object.keys(selected_coupons).forEach(function (key) {
-                    if (selected_coupons[key].checked) {
-                        update_coupons.push(selected_coupons[key].value)
-                    }
+        // function group_update_name(){
+        //     if(confirm('確認更新coupon名稱')){
+        //         document.getElementById('update_coupon_name').style.display = 'none'
+        //         const selected_coupons = document.getElementsByClassName('selected_coupon');
+        //         let form = new FormData();
+        //
+        //         //Get all coupon id which has been checked, put it in an array and convert array to string
+        //         let update_coupons = [];
+        //         Object.keys(selected_coupons).forEach(function (key) {
+        //             if (selected_coupons[key].checked) {
+        //                 update_coupons.push(selected_coupons[key].value)
+        //             }
+        //
+        //         });
+        //         update_coupons = JSON.stringify(update_coupons);
+        //         form.append('update_coupons', update_coupons);
+        //
+        //
+        //         let name_to_update = document.getElementById('name_to_update').value;
+        //         form.append('name_to_update',name_to_update);
+        //
+        //         fetch('_update_coupon_name_api.php',{
+        //             method:'POST',
+        //             body:form
+        //         })
+        //             .then(response=>response.text())
+        //             .then(data=>console.log(data))
+        //     }
+        // }
+        // window.addEventListener('hashchange', function () {
+        //     alert('jsifjwfjiwofji');
+        // });
+        const issue_level_field = document.getElementById('issue_level')
+        function issue_by_level() {
+            document.getElementById('issue_by_level').style.display = 'none';
+            let form = new FormData();
+            form.append('issue_level', issue_level_field.value)
+            fetch('_issue_by_level_api.php',{
+                method:'POST',
+                body:form
+            })
+                .then(response=>response.json())
+                .then(data=>console.log(data))
 
-                });
-                update_coupons = JSON.stringify(update_coupons);
-                form.append('update_coupons', update_coupons);
-
-
-                let name_to_update = document.getElementById('name_to_update').value;
-                form.append('name_to_update',name_to_update);
-
-                fetch('_update_coupon_name_api.php',{
-                    method:'POST',
-                    body:form
-                })
-                    .then(response=>response.text())
-                    .then(data=>console.log(data))
-            }
         }
+
 
     </script>
 

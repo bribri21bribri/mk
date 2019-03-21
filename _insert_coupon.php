@@ -1,5 +1,5 @@
 <?php include __DIR__ . './_header.php';?>
-<?php include __DIR__ . './_nav.php'; ?>
+<?php include __DIR__ . './_coupon_nav.php'; ?>
 
 
   <div class="container-fluid">
@@ -41,7 +41,7 @@
                           <select class="form-control" name="issue_condi">
                               <option value="1">初次登入</option>
                               <option value="2">會員等級</option>
-                              <option value="3">訂單</option>
+                              <option value="3">訂單累積</option>
                           </select>
                       </div>
                       <div class="form-group">

@@ -3,4 +3,4 @@
 
 $planType = $_POST['planType'];
 echo json_encode($planType,JSON_UNESCAPED_UNICODE);
-setcookie('planType',$planType);
+

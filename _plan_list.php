@@ -1,5 +1,5 @@
 <?php include __DIR__ . './_header.php' ?>
-<?php include __DIR__ . './_nav.php' ?>
+<?php include __DIR__. './_plan_nav.php' ?>
 
     <div class="container-fluid">
         <div class="row">
@@ -54,30 +54,31 @@
         const info_bar = document.getElementById('info_bar');
         const planType = document.getElementById('planType');
         planType.addEventListener('change', sendPlanType);
-
+        let condi;
 
 
         const data_body = document.getElementById('data_body');
 
 
-        function deside_condi() {
-            let condi;
-            if (planType.value == 'user_plan') {
-                condi = 'user_condi'
-            } else if (planType.value == 'price_plan') {
-                condi = 'price_condi';
-            } else if (planType.value == 'prod_plan') {
-                condi =  'prod_condi';
-            } else if (planType.value == 'amount_plan') {
-                condi = 'amount_condi';
-            }
-            return condi;
-        }
+
+        const dis_type_arr = {
+            1:'打折',
+            2:'扣除金額'
+        };
 
 
         function sendPlanType() {
-
-
+            condi = planType.value;
+            let condi_col;
+            if (condi == 'user_plan') {
+                    condi_col = 'user_condi'
+                } else if (condi == 'price_plan') {
+                    condi_col = 'price_condi';
+                } else if (condi == 'prod_plan') {
+                    condi_col =  'prod_condi';
+                } else if (condi == 'amount_plan') {
+                    condi_col = 'amount_condi';
+                }
 
             let planTypeInput = new FormData();
             planTypeInput.append('planType', planType.value);
@@ -102,9 +103,9 @@
                         </td>
                         <td class="plan_id">${val.id}</td>
                         <td class="plan_name">${val.name}</td>
-                        <td class="plan_condi">${val[deside_condi()]}</td>
+                        <td class="plan_condi">${val[condi_col]}</td>
                         <td class="plan_dis_num">${val.dis_num}</td>
-                        <td class="plan_dis_type">${val.dis_type}</td>
+                        <td class="plan_dis_type">${dis_type_arr[val.dis_type]}</td>
                         <td class="plan_start">${val.start}</td>
                         <td class="plan_end">${val.end}</td>
                         <td><a href="javascript: delete_plan(${val.id})">
@@ -136,7 +137,18 @@
                     .then(result => {
                         console.log(result);
 
+                        info_bar.style.display = 'block';
 
+                        if (result.success) {
+                            info_bar.className = 'alert alert-success';
+                            info_bar.innerHTML = '刪除成功';
+                        } else {
+                            info_bar.className = 'alert alert-danger';
+                            info_bar.innerHTML = obj.errorMsg;
+                        }
+                        setTimeout(function () {
+                            info_bar.style.display = 'none';
+                        }, 2000);
                         sendPlanType();
                     })
             }

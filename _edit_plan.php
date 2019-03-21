@@ -1,5 +1,5 @@
 <?php include __DIR__ . './_header.php' ?>
-<?php include __DIR__ . './_nav.php' ?>
+<?php include __DIR__. './_plan_nav.php' ?>
 
 <style>
     .form-group small {
@@ -70,7 +70,7 @@ $dis_type_rows = $dis_type_stmt->fetchAll(PDO::FETCH_ASSOC);
                               <select class="form-control" name="condi">
                                 <?php foreach ($mem_rows as $mem_row): ?>
                                     <option <?= $row['user_condi'] == $mem_row['mem_level'] ? "selected" : ""; ?>
-                                            value="<?= $mem_row['mem_level'] ?>"><?= $mem_row['mem_title'] ?></option>
+                                            value="<?= $mem_row['mem_level'] ?>"><?= $mem_row['level_title'] ?></option>
                                 <?php endforeach; ?>
                               </select>
                               <small id="" class="form-text text-muted"></small>
@@ -240,7 +240,7 @@ $dis_type_rows = $dis_type_stmt->fetchAll(PDO::FETCH_ASSOC);
 
                         if(obj.success){
                             info_bar.className = 'alert alert-success';
-                            info_bar.innerHTML = '資料新增成功';
+                            info_bar.innerHTML = '資料修改成功';
                         } else {
                             info_bar.className = 'alert alert-danger';
                             info_bar.innerHTML = obj.errorMsg;
