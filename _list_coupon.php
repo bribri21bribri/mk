@@ -14,20 +14,20 @@ try {
 
 
     <style>
-        #assign_to_user {
-            width: 300px;
-            height: 400px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            background: rgba(0, 0, 0, 0.6);
-            transform: translateY(-50%) translateX(-50%);
-            border-radius: 10px;
-        }
+        /*#assign_to_user {*/
+            /*width: 300px;*/
+            /*height: 200px;*/
+            /*position: fixed;*/
+            /*top: 50%;*/
+            /*left: 50%;*/
+            /*background: rgba(0, 0, 0, 0.6);*/
+            /*transform: translateY(-50%) translateX(-50%);*/
+            /*border-radius: 10px;*/
+        /*}*/
 
-        body {
-            position: relative;
-        }
+        /*body {*/
+            /*position: relative;*/
+        /*}*/
     </style>
 
     <div class="container-fluid">
@@ -90,42 +90,108 @@ try {
 
         </div>
 
-        <div class="row modal" id="assign_to_user" style="display: none">
-            <button class="close" type="button" onclick="">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <div class="col-lg-12">
-                <form>
-                    <div class="form-group">
-                        <input type="text" placeholder="輸入欲指派使用者ID" id="assign_by_id">
-                    </div>
-                    <button class="btn btn-primary" onclick="group_assign()" type="button">Submit</button>
-                </form>
-            </div>
-        </div>
-        <button class="btn btn-warning" onclick="assign_to_user.style.display = 'block';" type="button">依使用者ID指定
-        </button>
+<!--        <div class="row" id="assign_to_user" style="display: none">-->
+<!--            <button class="close" type="button" onclick="">-->
+<!--                <span aria-hidden="true">&times;</span>-->
+<!--            </button>-->
+<!--            <div >-->
+<!--                <form class="d-flex  justify-content-center">-->
+<!--                    <div class="form-group align-items-center" >-->
+<!--                        <input type="text" placeholder="輸入欲指派使用者ID" id="assign_by_id">-->
+<!--                    </div>-->
+<!--                    <button class="btn btn-primary align-items-center" onclick="group_assign()" type="button">Submit</button>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!---->
+<!---->
+<!---->
+<!--        <div class="row" id="issue_by_level" style="display: none">-->
+<!--            <div class="">-->
+<!--                <form>-->
+<!--                    <select class="form-control" name="issue_level" id="issue_level">-->
+<!--                      --><?php //foreach ($mem_rows as $mem_row): ?>
+<!--                          <option value="--><?//= $mem_row['mem_level'] ?><!--">--><?//= $mem_row['level_title'] ?><!--</option>-->
+<!--                      --><?php //endforeach; ?>
+<!--                    </select>-->
+<!--                    <button class="btn btn-primary" onclick="issue_by_level()" type="button">Submit</button>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
 
-        <div class="row" id="issue_by_level" style="display: none">
-            <div class="col-lg-12">
-                <form>
-                    <select class="form-control" name="issue_level" id="issue_level">
-                      <?php foreach ($mem_rows as $mem_row): ?>
-                          <option value="<?= $mem_row['mem_level'] ?>"><?= $mem_row['level_title'] ?></option>
-                      <?php endforeach; ?>
-                    </select>
-                    <button class="btn btn-primary" onclick="issue_by_level()" type="button">Submit</button>
-                </form>
-            </div>
-        </div>
-        <button class="btn btn-warning" onclick="document.getElementById('issue_by_level').style.display = 'block'" type="button">依使用者LEVEL指定</button>
-
-
+<!--        <button class="btn btn-warning" onclick="assign_to_user.style.display = 'block';" type="button">依使用者ID指定</button>-->
+<!--        <button class="btn btn-warning" onclick="document.getElementById('issue_by_level').style.display = 'block'" type="button">依使用者LEVEL指定</button>-->
         <button class="btn btn-danger" onclick="group_delete()" type="button">刪除</button>
+
+
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userIdModal" data-whatever="">依使用者ID指定</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#userLevelModal" data-whatever="">依使用者LEVEL指定</button>
+
+        <div class="modal fade" id="userIdModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">使用者ID</label>
+                                <input type="text" placeholder="輸入欲指派使用者ID" id="assign_by_id" class="form-control">
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="group_assign()">配發</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="userLevelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <select class="form-control" name="issue_level" id="issue_level">
+                              <?php foreach ($mem_rows as $mem_row): ?>
+                                  <option value="<?= $mem_row['mem_level'] ?>"><?= $mem_row['level_title'] ?></option>
+                              <?php endforeach; ?>
+                            </select>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="issue_by_level()">配發</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
     <script>
+        // $('#exampleModal').on('show.bs.modal', function (event) {
+        //     var button = $(event.relatedTarget) // Button that triggered the modal
+        //     var recipient = button.data('whatever') // Extract info from data-* attributes
+        //     // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        //     // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        //     var modal = $(this)
+        //     modal.find('.modal-title').text('New message to ' + recipient)
+        //     modal.find('.modal-body input').val(recipient)
+        // });
         // const update_coupon_name = document.getElementById('update_coupon_name');
         // const update_dis_num = document.getElementById('update_dis_num');
         // const update_dis_type =document.getElementById('update_dis_type');
@@ -381,7 +447,7 @@ try {
 
         function group_assign() {
             if (confirm('確認指派給此使用者')) {
-                document.getElementById('assign_to_user').style.display = 'none';
+                // document.getElementById('assign_to_user').style.display = 'none';
                 const selected_coupons = document.getElementsByClassName('selected_coupon');
 
                 let form = new FormData();
@@ -406,7 +472,19 @@ try {
                     body: form
                 })
                     .then(response => response.text())
-                    .then(data => console.log(data))
+                    .then(data => {
+                        console.log(data);
+                        info_bar.style.display='block';
+                        if(data['success']==true){
+                            info_bar.className = 'alert alert-success';
+                            info_bar.innerHTML = "指派成功";
+                        }else {
+                            info_bar.className = 'alert alert-danger';
+                            info_bar.innerHTML = "指派發生錯誤成功";
+                        }
+
+                        switch_input();
+                    })
             }
         }
 
@@ -444,7 +522,7 @@ try {
         // });
         const issue_level_field = document.getElementById('issue_level')
         function issue_by_level() {
-            document.getElementById('issue_by_level').style.display = 'none';
+            // document.getElementById('issue_by_level').style.display = 'none';
             let form = new FormData();
             form.append('issue_level', issue_level_field.value)
             fetch('_issue_by_level_api.php',{
@@ -452,7 +530,21 @@ try {
                 body:form
             })
                 .then(response=>response.json())
-                .then(data=>console.log(data))
+                .then(data=>{
+                    console.log(data);
+                    info_bar.style.display='block'
+                    if(data['success']==true){
+                        info_bar.className = 'alert alert-success';
+                        info_bar.innerHTML = "指派成功";
+                    }else {
+                        info_bar.className = 'alert alert-danger';
+                        info_bar.innerHTML = data['errorMsg'];
+                    }
+                    setTimeout(function () {
+                        info_bar.style.display='none'
+                    },2000);
+                    switch_input();
+                })
 
         }
 
