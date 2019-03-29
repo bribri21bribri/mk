@@ -34,6 +34,7 @@ try {
 
         <div class="row">
             <div class="col-lg-12">
+                <ul class="pagination pagination-sm"></ul>
                 <div class="alert alert-success" role="alert" style="display: none;" id="info_bar"></div>
                 <form name="list_coupon_form" id="list_coupon_form">
                     <div class="form-group">
@@ -55,9 +56,16 @@ try {
                         <label>查詢條件</label>
 
                     </div>
-                    <button class="btn btn-success" onclick="select_all()" type="button">全選</button>
-                    <button class="btn btn-success" onclick="unselect_all()" type="button">取消全選</button>
-                    <button class="btn btn-primary" onclick="send_search_condition()" type="button">Submit</button>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <button class="btn btn-primary" onclick="send_search_condition()" type="button">Submit</button>
+                        </div>
+                        <div>
+                            <button class="btn btn-success" onclick="select_all()" type="button">全選</button>
+                            <button class="btn btn-success" onclick="unselect_all()" type="button">取消全選</button>
+                        </div>
+                    </div>
+
 
                 </form>
 
@@ -200,38 +208,48 @@ try {
         // const update_expire = document.getElementById('update_expire');
         const assign_to_user = document.getElementById('assign_to_user');
         let according_val;
+        let page=1;
+        const ul_pagi = document.querySelector('.pagination');
+
 
         function switch_input(e) {
             const coupon_output = document.getElementById('coupon_output');
-            if (document.getElementById('according_to').value) {
-                according_val = document.getElementById('according_to').value;
-                console.log(according_val)
-            } else {
+            if (!according_val) {
                 according_val = 1;
-                console.log(according_val);
+                console.log(according_val)
+            }else{
+                according_val = document.getElementById('according_to').value;
             }
 
+            let h = location.hash.slice(1);
+            page = parseInt(h);
+            if(isNaN(page)){
+                page = 1;
+            }
             const coupon_table = document.getElementById('coupon_table');
             let according_to = new FormData();
             according_to.append('according_to', according_val);
-            fetch('_switch_coupon_form_api.php', {
+            fetch('_switch_coupon_form_api.php?page='+page, {
                 method: 'POST',
                 body: according_to
             })
                 .then(response => response.json())
                 .then(result => {
                         const condition_input = document.getElementById('condition_input');
-                        // console.log(result); //FOR TEST
+                         console.log(result); //FOR TEST
                         //return false;
                         if (result['according_to'] == 4) {
                             condition_input.innerHTML = '<label>查詢條件</label><input class="form-control" type="text" name="coupon_code" id="coupon_code_field" placeholder="請輸入coupon CODE">';
-                            coupon_table.style.display = 'none';
+                            // coupon_table.style.display = 'none';
+                            coupon_output.innerHTML = "";
                         } else if (result['according_to'] == 5) {
                             condition_input.innerHTML = '<label>查詢條件</label><input class="form-control" type="text" name="coupon_name" id="coupon_name_field" placeholder="請輸入coupon名稱 ">';
-                            coupon_table.style.display = 'none';
+                            // coupon_table.style.display = 'none';
+                            coupon_output.innerHTML = "";
                         } else if (result['according_to'] == 6) {
                             condition_input.innerHTML = '<label>查詢條件</label><input class="form-control" type="text" name="user_id" id="user_id_field" placeholder="請輸入使用者 ID">';
-                            coupon_table.style.display = 'none';
+                            // coupon_table.style.display = 'none';
+                            coupon_output.innerHTML = "";
                         } else if (result['according_to'] == 7) {
                             condition_input.innerHTML = '<label>查詢條件</label>' +
                                 '<select class="form-control" name="issue_condi" id="issue_condi_field">' +
@@ -240,7 +258,8 @@ try {
                                 '<option value="2">升等</option>' +
                                 '<option value="3">累積訂單</option>' +
                                 '</select>';
-                            coupon_table.style.display = 'none';
+                            // coupon_table.style.display = 'none';
+                            coupon_output.innerHTML = "";
 
                         } else {
                             condition_input.innerHTML = '<label>查詢條件</label>';
@@ -273,15 +292,59 @@ try {
                                 str += tr_str;
                             }
                             coupon_output.innerHTML = str;
+
+                            str= "";
+                            for(let i =1;i<= result.totalPages;i++){
+                                let active = result.page ===i ? 'active': '';
+
+                                str+=`<li class="page-item ${active}">
+                        <a class="page-link" href="#${i}">${i}</a>
+                    </li>`
+                            }
+                            ul_pagi.innerHTML = str;
+
+                            if (result['success']) {
+                                info_bar.style.display = 'none';
+                                // info_bar.className = 'alert alert-success';
+                                // info_bar.innerHTML = '刪除成功';
+                            } else {
+                                info_bar.style.display = 'block';
+                                info_bar.className = 'alert alert-danger';
+                                info_bar.innerHTML = result.errorMsg;
+                                setTimeout(function () {
+                                    info_bar.style.display = 'none';
+                                },2000)
+                            }
+
                         }
 
-                    }
-                )
+                    });
         }
-
+        window.addEventListener('hashchange',function () {
+            according_val = document.getElementById('according_to').value
+            if(according_val<4){
+                switch_input()
+            }else{
+                send_search_condition()
+            }
+        });
         switch_input();
 
+
         function send_search_condition(e) {
+            if (!according_val) {
+                according_val = 1;
+                console.log(according_val)
+            }else{
+                according_val = document.getElementById('according_to').value;
+            }
+
+            let h = location.hash.slice(1);
+            page = parseInt(h);
+            if(isNaN(page)){
+                page = 1;
+            }
+
             const according_to = document.getElementById('according_to').value;
             const coupon_table = document.getElementById('coupon_table');
             const coupon_output = document.getElementById('coupon_output');
@@ -307,7 +370,7 @@ try {
             let form = new FormData();
             form.append(field_name, field_val);
             form.append('according_to', according_to);
-            fetch('_list_coupon_api.php', {
+            fetch('_list_coupon_api.php?page='+page, {
                 method: 'POST',
                 body: form
             })
@@ -346,6 +409,15 @@ try {
                     }
                     coupon_output.innerHTML = str;
 
+                    str= "";
+                    for(let i =1;i<= result.totalPages;i++){
+                        let active = result.page ===i ? 'active': '';
+
+                        str+=`<li class="page-item ${active}">
+                        <a class="page-link" href="#${i}">${i}</a>
+                    </li>`
+                    }
+                    ul_pagi.innerHTML = str;
 
                     if (result['success']) {
                         info_bar.style.display = 'none';
@@ -355,6 +427,9 @@ try {
                         info_bar.style.display = 'block';
                         info_bar.className = 'alert alert-danger';
                         info_bar.innerHTML = result.errorMsg;
+                        setTimeout(function () {
+                            info_bar.style.display = 'none';
+                        },2000)
                     }
                 })
         }
@@ -517,9 +592,7 @@ try {
         //             .then(data=>console.log(data))
         //     }
         // }
-        // window.addEventListener('hashchange', function () {
-        //     alert('jsifjwfjiwofji');
-        // });
+
         const issue_level_field = document.getElementById('issue_level')
         function issue_by_level() {
             // document.getElementById('issue_by_level').style.display = 'none';
